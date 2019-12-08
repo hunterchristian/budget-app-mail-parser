@@ -4,10 +4,7 @@
   "rules": {
     "adjacent-overload-signatures": true,
     "ban-ts-ignore": false,
-    "member-access": [
-      true,
-      "no-public"
-    ],
+    "member-access": [true, "no-public"],
     "member-ordering": [
       true,
       {
@@ -32,11 +29,7 @@
         "ignore-module": "(\\.html|\\.css|\\.scss)$"
       }
     ],
-    "no-inferrable-types": [
-      true,
-      "ignore-params",
-      "ignore-properties"
-    ],
+    "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
     "no-internal-module": true,
     "no-magic-numbers": false,
     "no-namespace": true,
@@ -48,10 +41,7 @@
     "only-arrow-functions": false,
     "prefer-for-of": false,
     "promise-function-async": true,
-    "typedef": [
-      true,
-      "member-variable-declaration"
-    ],
+    "typedef": [true, "member-variable-declaration"],
     "typedef-whitespace": [
       true,
       {
@@ -79,10 +69,7 @@
     "curly": true,
     "forin": true,
     "function-constructor": true,
-    "import-blacklist": [
-      true,
-      "lodash"
-    ],
+    "import-blacklist": [true, "lodash"],
     "label-position": true,
     "no-arg": true,
     "no-bitwise": true,
@@ -134,55 +121,26 @@
     "no-unused-variable": true,
     "no-use-before-declare": false,
     "no-var-keyword": true,
-    "no-void-expression": [
-      true,
-      "ignore-arrow-function-shorthand"
-    ],
-    "prefer-conditional-expression": [
-      true,
-      "check-else-if"
-    ],
+    "no-void-expression": [true, "ignore-arrow-function-shorthand"],
+    "prefer-conditional-expression": [true, "check-else-if"],
     "prefer-object-spread": true,
     "radix": true,
     "restrict-plus-operands": false,
     "strict-boolean-expressions": false,
     "strict-type-predicates": false,
     "switch-default": true,
-    "triple-equals": [
-      true,
-      "allow-null-check",
-      "allow-undefined-check"
-    ],
+    "triple-equals": [true, "allow-null-check", "allow-undefined-check"],
     "unnecessary-constructor": true,
     "use-default-type-parameter": true,
     "use-isnan": true,
-    "cyclomatic-complexity": [
-      true,
-      5
-    ],
+    "cyclomatic-complexity": [true, 5],
     "deprecation": true,
     "eofline": true,
-    "indent": [
-      true,
-      "spaces",
-      2
-    ],
-    "linebreak-style": [
-      true,
-      "LF"
-    ],
-    "max-classes-per-file": [
-      true,
-      1
-    ],
-    "max-file-line-count": [
-      true,
-      300
-    ],
-    "max-line-length": [
-      true,
-      120
-    ],
+    "indent": [true, "spaces", 2],
+    "linebreak-style": [true, "LF"],
+    "max-classes-per-file": [true, 1],
+    "max-file-line-count": [true, 300],
+    "max-line-length": [true, 120],
     "no-default-export": false,
     "no-default-import": false,
     "no-duplicate-imports": true,
@@ -211,14 +169,8 @@
       "members",
       "elements"
     ],
-    "array-type": [
-      true,
-      "array"
-    ],
-    "arrow-parens": [
-      true,
-      "ban-single-arg-parens"
-    ],
+    "array-type": [true, "array"],
+    "arrow-parens": [true, "ban-single-arg-parens"],
     "arrow-return-shorthand": [true, "multiline"],
     "binary-expression-operand-order": true,
     "callable-types": true,
@@ -227,19 +179,10 @@
       true,
       "check-space",
       {
-        "ignore-words": [
-          "TODO",
-          "HACK",
-          "FIXME"
-        ]
+        "ignore-words": ["TODO", "HACK", "FIXME"]
       }
     ],
-    "comment-type": [
-      true,
-      "multiline",
-      "doc",
-      "singleline"
-    ],
+    "comment-type": [true, "multiline", "doc", "singleline"],
     "completed-docs": false,
     "encoding": true,
     "file-header": false,
@@ -253,15 +196,9 @@
     ],
     "import-spacing": true,
     "increment-decrement": true,
-    "interface-name": [
-      true,
-      "never-prefix"
-    ],
+    "interface-name": [true, "never-prefix"],
     "interface-over-type-literal": true,
-    "jsdoc-format": [
-      true,
-      "check-multiline-start"
-    ],
+    "jsdoc-format": [true, "check-multiline-start"],
     "match-default-export-name": false,
     "newline-before-return": true,
     "newline-per-chained-call": false,
@@ -278,10 +215,7 @@
     "no-unnecessary-initializer": true,
     "no-unnecessary-qualifier": true,
     "number-literal-format": true,
-    "object-literal-key-quotes": [
-      true,
-      "as-needed"
-    ],
+    "object-literal-key-quotes": [true, "as-needed"],
     "object-literal-shorthand": true,
     "one-line": [
       true,
@@ -301,10 +235,7 @@
         "min-cases": 3
       }
     ],
-    "prefer-template": [
-      true,
-      "allow-single-concat"
-    ],
+    "prefer-template": [true, "allow-single-concat"],
     "prefer-while": true,
     "quotemark": [
       true,
@@ -314,10 +245,7 @@
       "avoid-template"
     ],
     "return-undefined": true,
-    "semicolon": [
-      true,
-      "always"
-    ],
+    "semicolon": [true, "always"],
     "space-before-function-paren": [
       true,
       {
@@ -329,10 +257,7 @@
       }
     ],
     "space-within-parens": true,
-    "switch-final-break": [
-      true,
-      "always"
-    ],
+    "switch-final-break": [true, "always"],
     "type-literal-delimiter": true,
     "unnecessary-bind": true,
     "variable-name": [
@@ -357,10 +282,6 @@
   },
   "rulesDirectory": [],
   "linterOptions": {
-    "exclude": [
-      "coverage/**",
-      "dist/**",
-      "node_modules/**"
-    ]
+    "exclude": ["coverage/**", "dist/**", "node_modules/**"]
   }
 }
