@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sentry/node": "^5.10.1",
     "@types/express": "^4.17.2",
     "@types/multiparty": "0.0.32",
     "async": "^3.1.0",
