@@ -32,6 +32,6 @@
     "tslint": "^5.20.1"
   },
   "_moduleAliases": {
-    "@/*": "src/*"
+    "@": "build"
   }
 }
