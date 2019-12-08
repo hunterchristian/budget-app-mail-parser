@@ -1,0 +1,38 @@
+name: CI/CD
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone source code
+        uses: actions/checkout@v1
+      - name: Use Node.js 12.X
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.X
+      - name: npm install, build, and test
+        run: |
+          npm ci
+          npm run lint
+          npm run build
+          npm run test
+          npm run check-format --if-present
+        env:
+          CI: true
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone source code
+        uses: actions/checkout@v1
+      - name: Deploy to Google App Engine
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: budget-app-hunterhod
+          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        with:
+          args: app deploy
