@@ -1,8 +1,13 @@
+// Register module aliases
+// https://www.npmjs.com/package/module-alias
+// tslint:disable-next-line: no-import-side-effect
+import 'module-alias/register';
+
 /**
  * Module dependencies.
  */
+import app from '@/server';
 import * as http from 'http';
-import app from './server';
 
 /**
  * Get port from environment and store in Express.
