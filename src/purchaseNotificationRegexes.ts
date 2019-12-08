@@ -3,6 +3,7 @@ export interface PurchaseNotificationEmailRegexGroup {
   amount: RegExp;
   // Sometimes descriptions are displayed as links in American Express
   description: RegExp[];
+  date: RegExp;
 }
 
 const AMERICAN_EXPRESS_REGEX_GROUP: PurchaseNotificationEmailRegexGroup = {
@@ -12,6 +13,7 @@ const AMERICAN_EXPRESS_REGEX_GROUP: PurchaseNotificationEmailRegexGroup = {
     /(?<=" shape="rect" target="_blank">)(.*)(?=<\/a><\/b>)/g,
     /(?<=<p align="left" style="margin-top:0px;font-family:Arial;margin-bottom:0px;font-size:13pt;color:#006fcf"><b>)(.*)(?=<\/b><\/p><\/td><td width="34.26%")/g,
   ],
+  date: /(?<=colspan="1"><p align="right" style="margin-top:0px;font-family:Arial;margin-bottom:0px;font-size:13pt;color:black">)(.*?)(?=<\/p><p style="margin-top:0px;)/g,
 };
 
 export const PURCHASE_NOTIFICATION_REGEX_GROUPS: ImmutableRecord<
