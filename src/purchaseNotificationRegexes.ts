@@ -10,7 +10,7 @@ const AMERICAN_EXPRESS_REGEX_GROUP: PurchaseNotificationEmailRegexGroup = {
   amount: /(?<=<p align="right" style="margin-top:0px;font-family:Arial;margin-bottom:0px;font-size:13pt;color:black"><b>\$)(.*?)(?=\*<\/b><\/p>)/g,
   description: [
     /(?<=" shape="rect" target="_blank">)(.*)(?=<\/a><\/b>)/g,
-    /(?<=<p align="left" style="margin-top:0px;font-family:Arial;margin-bottom: 0px;font-size: 13pt;color: #006fcf"><b>)(.*)(?=<\/b><\/p>)/g,
+    /(?<=<p align="left" style="margin-top:0px;font-family:Arial;margin-bottom:0px;font-size:13pt;color:#006fcf"><b>)(.*)(?=<\/b><\/p><\/td><td width="34.26%")/g,
   ],
 };
 

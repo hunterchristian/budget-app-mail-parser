@@ -12,7 +12,7 @@ export default function parseDescriptionFromHtml(
 
   if (!description) {
     // TODO: log error in Sentry along with the html which failed the regex
-    throw new Error(`Could not parse description from html: ${html}`);
+    throw new Error('Could not parse description from html.');
   }
 
   return description[0];

@@ -23,7 +23,7 @@ app.post('/webhook', function(req, res) {
 
     form.parse(req, function(err, fields: MailinFormData) {
       const mailinMsg = JSON.parse(fields.mailinMsg[0]) as MailinMsg;
-      console.log(`MailinMsg: ${mailinMsg}`);
+      console.log(`MailinMsg html: ${mailinMsg.html}`);
       const transaction = parseTransactionFromPurchaseNotification(
         mailinMsg.html
       );
