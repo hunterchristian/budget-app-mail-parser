@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node -r module-alias/register build/start.js",
-    "test": "jest src/",
+    "test": "FAIL_FAST=true jest src/",
     "deploy": "npm run build && gcloud app deploy",
     "watch": "./node_modules/.bin/tsc -w",
     "build": "rm -rf build/ && ./node_modules/.bin/tsc -p tsconfig.build.json",
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
+    "jasmine-fail-fast": "^2.0.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
     "tslint": "^5.20.1"
