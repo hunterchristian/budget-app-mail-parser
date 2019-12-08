@@ -246,16 +246,7 @@
     ],
     "return-undefined": true,
     "semicolon": [true, "always"],
-    "space-before-function-paren": [
-      true,
-      {
-        "anonymous": "always",
-        "named": "never",
-        "asyncArrow": "always",
-        "constructor": "never",
-        "method": "never"
-      }
-    ],
+    "space-before-function-paren": false,
     "space-within-parens": true,
     "switch-final-break": [true, "always"],
     "type-literal-delimiter": true,
