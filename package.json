@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node build/start.js",
+    "start": "node -r module-alias/register build/start.js",
     "test": "jest src/",
     "deploy": "npm run build && gcloud app deploy",
     "watch": "./node_modules/.bin/tsc -w",
