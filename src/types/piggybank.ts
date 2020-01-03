@@ -3,4 +3,6 @@ export interface Transaction {
   description: string;
   date: string;
   source: string;
+  // UUID to identify duplicates
+  id: string;
 }
