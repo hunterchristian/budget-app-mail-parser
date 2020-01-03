@@ -1,6 +1,13 @@
 import * as Sentry from '@sentry/node';
 import * as express from 'express';
+import * as admin from 'firebase-admin';
 import * as multiparty from 'multiparty';
+
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+});
+
+const db = admin.firestore();
 
 // Setup Sentry
 // https://sentry.io/hunterhodnett/budget-app/getting-started/node/
@@ -38,12 +45,24 @@ app.post('/webhook', function(req, res) {
     maxFieldsSize: 70000000,
   });
 
-  form.parse(req, function(err, fields: MailinFormData) {
+  form.parse(req, async function(err, fields: MailinFormData) {
     const mailinMsg = JSON.parse(fields.mailinMsg[0]) as MailinMsg;
     const transaction = parseTransactionFromPurchaseNotification(
       mailinMsg.html
     );
     console.log(`Transaction: ${JSON.stringify(transaction)}`);
+
+    // email is used as a username
+    const username = mailinMsg.from[0].address;
+    await db
+      .collection(`${username}\\daily`)
+      .doc(transaction.date)
+      .set(
+        {
+          transactions: admin.firestore.FieldValue.arrayUnion(transaction),
+        },
+        { merge: true }
+      );
   });
 });
 

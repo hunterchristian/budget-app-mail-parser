@@ -4,6 +4,7 @@ import parseAmountFromHtml from '@/parser/utils/parseAmountFromHtml';
 import parseDateFromHtml from '@/parser/utils/parseDateFromHtml';
 import parseDescriptionFromHtml from '@/parser/utils/parseDescriptionFromHtml';
 import { Transaction } from '@/types/piggybank';
+import * as uuidv4 from 'uuid/v4';
 
 export function parseTransactionFromPurchaseNotification(html: string) {
   const financialInstitutionName = getFinancialInstitutionNameFromEmail(html);
@@ -18,6 +19,7 @@ export function parseTransactionFromPurchaseNotification(html: string) {
     description,
     date,
     source: financialInstitutionName,
+    id: uuidv4(),
   };
 
   return transaction;
