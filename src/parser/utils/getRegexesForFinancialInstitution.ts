@@ -1,10 +1,10 @@
-import { PURCHASE_NOTIFICATION_REGEX_GROUPS as REGEX_GROUPS } from '@/purchaseNotificationRegexes';
+import { PURCHASE_NOTIFICATION_REGEX_GROUPS as REGEX_GROUPS } from '@/parser/purchaseNotificationRegexes';
 
 export default function getRegexesForFinancialInstitution(name: string) {
   for (const property in REGEX_GROUPS) {
     if (REGEX_GROUPS.hasOwnProperty(property)) {
       const group = REGEX_GROUPS[property];
-      if (name.match(group.financialInstitutionName).length > 0) {
+      if (name.match(group.financialInstitutionName)) {
         return group;
       }
     }
