@@ -47,9 +47,7 @@ app.post('/webhook', function(req, res) {
 
   form.parse(req, async function(err, fields: MailinFormData) {
     const mailinMsg = JSON.parse(fields.mailinMsg[0]) as MailinMsg;
-    const transaction = parseTransactionFromPurchaseNotification(
-      mailinMsg.html
-    );
+    const transaction = parseTransactionFromPurchaseNotification(mailinMsg);
     console.log(`Transaction: ${JSON.stringify(transaction)}`);
 
     // email is used as a username

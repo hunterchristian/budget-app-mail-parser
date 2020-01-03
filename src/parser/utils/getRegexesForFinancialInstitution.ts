@@ -1,4 +1,4 @@
-import { PURCHASE_NOTIFICATION_REGEX_GROUPS as REGEX_GROUPS } from '@/parser/purchaseNotificationRegexes';
+import { PURCHASE_NOTIFICATION_REGEX_GROUPS as REGEX_GROUPS } from '@/parser/regexes';
 
 export default function getRegexesForFinancialInstitution(name: string) {
   for (const property in REGEX_GROUPS) {

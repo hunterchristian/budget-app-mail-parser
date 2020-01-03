@@ -1,4 +1,4 @@
-import { ORIGINAL_SENDER_REGEX } from '@/purchaseNotificationRegexes';
+import { ORIGINAL_SENDER_REGEX } from '@/parser/regexes';
 
 export default function getFinancialInstitutionNameFromEmail(html: string) {
   const originalSender = html.match(ORIGINAL_SENDER_REGEX);

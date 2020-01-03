@@ -1,4 +1,4 @@
-import { ORIGINAL_SENDER_REGEX } from '@/purchaseNotificationRegexes';
+import { ORIGINAL_SENDER_REGEX } from '@/parser/regexes';
 
 describe('getFinancialInstitutionNameFromEmail()', () => {
   it('should return the first string that matches the ORIGINAL_SENDER regex', () => {
