@@ -50,4 +50,4 @@ export const PURCHASE_NOTIFICATION_REGEX_GROUPS: ImmutableRecord<
 
 // TODO: format is unique to GMail. Figure out how to extract
 // name from email providers other than GMail.
-export const ORIGINAL_SENDER_REGEX = /(?<=---------- Forwarded message ---------<br>From: <strong class="gmail_sendername" dir="auto">)(.*?)(?=<\/strong>)/g;
+export const ORIGINAL_SENDER_REGEX = /(?<=From: <strong class="gmail_sendername" dir="auto">)(.*?)(?=<\/strong>)/g;
