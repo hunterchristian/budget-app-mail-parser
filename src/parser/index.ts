@@ -8,10 +8,8 @@ import { Transaction } from '@/types/piggybank';
 import * as uuidv4 from 'uuid/v4';
 
 export function parseTransactionFromPurchaseNotification(mailinMsg: MailinMsg) {
-  const financialInstitutionName = getFinancialInstitutionNameFromEmail(
-    mailinMsg.html
-  );
-  console.log(`Financial institution name: ${financialInstitutionName}`);
+  const financialInstitutionName = mailinMsg.from[0].name;
+  console.log(`Parsing transaction from: ${financialInstitutionName}`);
 
   const regexes = getRegexesForFinancialInstitution(financialInstitutionName);
   const { transformations } = regexes;

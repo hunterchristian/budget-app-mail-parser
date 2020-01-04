@@ -5,6 +5,12 @@ import * as multiparty from 'multiparty';
 
 import split from './utils/split';
 
+const INGESTION_EMAIL_ADDRESS = 'ingestion@piggybank.dev';
+const KNOWN_SENDERS = new Set();
+KNOWN_SENDERS.add('hchodnett@gmail.com');
+KNOWN_SENDERS.add('AmericanExpress@welcome.aexp.com');
+KNOWN_SENDERS.add('alerts@notify.wellsfargo.com');
+
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
 });
@@ -19,8 +25,11 @@ Sentry.init({
 
 import { parseTransactionFromPurchaseNotification } from '@/parser';
 import { MailinFormData, MailinMsg } from '@/types/mailin';
+import { Transaction } from './types/piggybank';
 
-// Helpers
+/**
+ * Helpers
+ */
 function addMailinMsgToSentryScope(mailinMsg: MailinMsg) {
   Sentry.configureScope(function(scope) {
     scope.setExtra('mailinMsg.from[0].address', mailinMsg.from[0].address);
@@ -29,12 +38,23 @@ function addMailinMsgToSentryScope(mailinMsg: MailinMsg) {
     scope.setExtra('mailinMsg.to[0].name', mailinMsg.to[0].name);
   });
 
-  const MAX_EXTRA_DATA_LENGTH = 500;
-  split(mailinMsg.text, MAX_EXTRA_DATA_LENGTH, (splitText, index) => {
+  split(mailinMsg.text, (splitText, index) => {
     Sentry.configureScope(function(scope) {
       scope.setExtra(`mailinMsg.text${index}`, splitText);
     });
   });
+}
+
+async function saveTransactionInDb(transaction: Transaction, username: string) {
+  await db
+    .collection(`${username}\\daily`)
+    .doc(transaction.date)
+    .set(
+      {
+        transactions: admin.firestore.FieldValue.arrayUnion(transaction),
+      },
+      { merge: true }
+    );
 }
 
 /* Make an http server to receive the webhook. */
@@ -65,25 +85,27 @@ app.post('/webhook', function(req, res) {
   });
 
   form.parse(req, async function(err, fields: MailinFormData) {
-    const mailinMsg = JSON.parse(fields.mailinMsg[0]) as MailinMsg;
-
-    addMailinMsgToSentryScope(mailinMsg);
-
     try {
+      const mailinMsg = JSON.parse(fields.mailinMsg[0]) as MailinMsg;
+
+      addMailinMsgToSentryScope(mailinMsg);
+
+      if (mailinMsg.to[0].address !== INGESTION_EMAIL_ADDRESS) {
+        throw new Error(
+          `Invalid addressee: ${mailinMsg.to[0].address}. Expected ${INGESTION_EMAIL_ADDRESS}`
+        );
+      }
+
+      if (!KNOWN_SENDERS.has(mailinMsg.from[0].address)) {
+        throw new Error(`Unrecognized sender: ${mailinMsg.from[0].address}`);
+      }
+
       const transaction = parseTransactionFromPurchaseNotification(mailinMsg);
       console.log(`Transaction: ${JSON.stringify(transaction)}`);
 
       // email is used as a username
       const username = mailinMsg.from[0].address;
-      await db
-        .collection(`${username}\\daily`)
-        .doc(transaction.date)
-        .set(
-          {
-            transactions: admin.firestore.FieldValue.arrayUnion(transaction),
-          },
-          { merge: true }
-        );
+      await saveTransactionInDb(transaction, username);
     } catch (e) {
       console.error(e);
       Sentry.captureException(e);
