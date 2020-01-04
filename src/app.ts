@@ -3,6 +3,8 @@ import * as express from 'express';
 import * as admin from 'firebase-admin';
 import * as multiparty from 'multiparty';
 
+import split from './utils/split';
+
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
 });
@@ -17,6 +19,23 @@ Sentry.init({
 
 import { parseTransactionFromPurchaseNotification } from '@/parser';
 import { MailinFormData, MailinMsg } from '@/types/mailin';
+
+// Helpers
+function addMailinMsgToSentryScope(mailinMsg: MailinMsg) {
+  Sentry.configureScope(function(scope) {
+    scope.setExtra('mailinMsg.from[0].address', mailinMsg.from[0].address);
+    scope.setExtra('mailinMsg.from[0].name', mailinMsg.from[0].name);
+    scope.setExtra('mailinMsg.to[0].address', mailinMsg.to[0].address);
+    scope.setExtra('mailinMsg.to[0].name', mailinMsg.to[0].name);
+  });
+
+  const MAX_EXTRA_DATA_LENGTH = 500;
+  split(mailinMsg.text, MAX_EXTRA_DATA_LENGTH, (splitText, index) => {
+    Sentry.configureScope(function(scope) {
+      scope.setExtra(`mailinMsg.text${index}`, splitText);
+    });
+  });
+}
 
 /* Make an http server to receive the webhook. */
 const app = express();
@@ -47,20 +66,28 @@ app.post('/webhook', function(req, res) {
 
   form.parse(req, async function(err, fields: MailinFormData) {
     const mailinMsg = JSON.parse(fields.mailinMsg[0]) as MailinMsg;
-    const transaction = parseTransactionFromPurchaseNotification(mailinMsg);
-    console.log(`Transaction: ${JSON.stringify(transaction)}`);
 
-    // email is used as a username
-    const username = mailinMsg.from[0].address;
-    await db
-      .collection(`${username}\\daily`)
-      .doc(transaction.date)
-      .set(
-        {
-          transactions: admin.firestore.FieldValue.arrayUnion(transaction),
-        },
-        { merge: true }
-      );
+    addMailinMsgToSentryScope(mailinMsg);
+
+    try {
+      const transaction = parseTransactionFromPurchaseNotification(mailinMsg);
+      console.log(`Transaction: ${JSON.stringify(transaction)}`);
+
+      // email is used as a username
+      const username = mailinMsg.from[0].address;
+      await db
+        .collection(`${username}\\daily`)
+        .doc(transaction.date)
+        .set(
+          {
+            transactions: admin.firestore.FieldValue.arrayUnion(transaction),
+          },
+          { merge: true }
+        );
+    } catch (e) {
+      console.error(e);
+      Sentry.captureException(e);
+    }
   });
 });
 
