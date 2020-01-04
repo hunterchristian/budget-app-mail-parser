@@ -57,6 +57,22 @@ async function saveTransactionInDb(transaction: Transaction, username: string) {
     );
 }
 
+async function saveExceptionToDb(errorMessage: string, mailinMsg: MailinMsg) {
+  const exception = {
+    errorMessage,
+    mailinMsg,
+  };
+  await db
+    .collection('Caught Exceptions')
+    .doc(new Date().toDateString())
+    .set(
+      {
+        exceptions: admin.firestore.FieldValue.arrayUnion(exception),
+      },
+      { merge: true }
+    );
+}
+
 /* Make an http server to receive the webhook. */
 const app = express();
 
@@ -85,11 +101,10 @@ app.post('/webhook', function(req, res) {
   });
 
   form.parse(req, async function(err, fields: MailinFormData) {
+    const mailinMsg = JSON.parse(fields.mailinMsg[0]) as MailinMsg;
+    addMailinMsgToSentryScope(mailinMsg);
+
     try {
-      const mailinMsg = JSON.parse(fields.mailinMsg[0]) as MailinMsg;
-
-      addMailinMsgToSentryScope(mailinMsg);
-
       if (mailinMsg.to[0].address !== INGESTION_EMAIL_ADDRESS) {
         throw new Error(
           `Invalid addressee: ${mailinMsg.to[0].address}. Expected ${INGESTION_EMAIL_ADDRESS}`
@@ -109,6 +124,8 @@ app.post('/webhook', function(req, res) {
     } catch (e) {
       console.error(e);
       Sentry.captureException(e);
+
+      await saveExceptionToDb((e as Error).message, mailinMsg);
     }
   });
 });
