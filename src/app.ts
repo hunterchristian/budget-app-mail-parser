@@ -105,14 +105,14 @@ app.post('/webhook', function(req, res) {
     addMailinMsgToSentryScope(mailinMsg);
 
     try {
-      if (mailinMsg.to[0].address !== INGESTION_EMAIL_ADDRESS) {
+      if (mailinMsg.envelopeTo[0].address !== INGESTION_EMAIL_ADDRESS) {
         throw new Error(
-          `Invalid addressee: ${mailinMsg.to[0].address}. Expected ${INGESTION_EMAIL_ADDRESS}`
+          `Invalid addressee: ${mailinMsg.envelopeTo[0].address}. Expected ${INGESTION_EMAIL_ADDRESS}`
         );
       }
 
-      if (!KNOWN_SENDERS.has(mailinMsg.from[0].address)) {
-        throw new Error(`Unrecognized sender: ${mailinMsg.from[0].address}`);
+      if (!KNOWN_SENDERS.has(mailinMsg.headers.to)) {
+        throw new Error(`Unrecognized sender: ${mailinMsg.headers.to}`);
       }
 
       const transaction = parseTransactionFromPurchaseNotification(mailinMsg);
