@@ -123,7 +123,7 @@ app.post('/webhook', function(req, res) {
       console.log(`Transaction: ${JSON.stringify(transaction)}`);
 
       // email is used as a username
-      const username = mailinMsg.from[0].address;
+      const username = mailinMsg.headers.to;
       await saveTransactionInDb(transaction, username);
     } catch (e) {
       console.error(e);
