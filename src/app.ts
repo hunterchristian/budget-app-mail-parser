@@ -34,6 +34,10 @@ function addMailinMsgToSentryScope(mailinMsg: MailinMsg) {
   Sentry.configureScope(function(scope) {
     scope.setExtra('mailinMsg.from[0].address', mailinMsg.from[0].address);
     scope.setExtra('mailinMsg.from[0].name', mailinMsg.from[0].name);
+    scope.setExtra(
+      'mailinMsg.envelopeTo[0].address',
+      mailinMsg.envelopeTo[0].address
+    );
     scope.setExtra('mailinMsg.to[0].address', mailinMsg.to[0].address);
     scope.setExtra('mailinMsg.to[0].name', mailinMsg.to[0].name);
   });
